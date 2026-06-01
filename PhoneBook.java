@@ -71,6 +71,29 @@ public class PhoneBook {
         System.out.println("✔ Contact deleted successfully.");
         return true;
     }
+    // Edit contact by index
+    public boolean editContact(int index, String newName, String newPhone) {
+        List<Contact> contacts = getAllContacts();
+        if (index < 1 || index > contacts.size()) {
+            System.out.println("⚠ Number out of range.");
+            return false;
+        }
+
+        // Cek duplikat nomor baru
+        for (int i = 0; i < contacts.size(); i++) {
+            if (i != (index - 1) && contacts.get(i).getPhone().equalsIgnoreCase(newPhone)) {
+                System.out.println("⚠ Phone number already exists for: " + contacts.get(i).getName());
+                return false;
+            }
+        }
+
+        // Update data
+        Contact updated = new Contact(newName, newPhone);
+        contacts.set(index - 1, updated);
+        rewriteFile(contacts);
+        System.out.println("✔ Contact updated successfully: " + updated);
+        return true;
+    }
 
     // Helpers
     private void ensureFileExists() {
@@ -93,5 +116,7 @@ public class PhoneBook {
         } catch (IOException e) {
             System.out.println("✖ Error updating file: " + e.getMessage());
         }
+
+        
     }
 }
