@@ -7,7 +7,7 @@ public class PhoneBookApp {
 
         boolean running = true;
         while (running) {
-            System.out.println("\n1. Add Contact\n2. View Contacts\n3. Search Contact\n4. Delete Contact\n5. Exit");
+            System.out.println("\n1. Add Contact\n2. View Contacts\n3. Search Contact\n4. Delete Contact\n5. Edit Contact\n6. Exit");
             System.out.print("Choose: ");
             String choice = scanner.nextLine();
 
@@ -49,11 +49,28 @@ public class PhoneBookApp {
                     phoneBook.deleteContact(idx);
                     break;
                 case "5":
+                    List<Contact> contactsToEdit = phoneBook.getAllContacts();
+                    if (contactsToEdit.isEmpty()) {
+                        System.out.println("(No contacts to edit)");
+                        break;
+                    }
+                    int i = 1;
+                    for (Contact c : contactsToEdit) {
+                        System.out.println(i++ + ". " + c);
+                    }
+                    System.out.print("Enter number to edit: ");
+                    int editIdx = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Enter new name: ");
+                    String newName = scanner.nextLine().trim();
+                    System.out.print("Enter new phone: ");
+                    String newPhone = scanner.nextLine().trim();
+                    phoneBook.editContact(editIdx, newName, newPhone);
+                    break;
+                case "6":
                     running = false;
                     System.out.println("Goodbye!");
                     break;
-                default:
-                    System.out.println("Invalid choice.");
+
             }
         }
         scanner.close();
